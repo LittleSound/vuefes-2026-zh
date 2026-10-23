@@ -252,7 +252,8 @@ dialog .dhead { padding: 14px 16px 6px; font-weight: 700; }
 dialog .dhint { padding: 0 16px; font-size: 13px; color: var(--sub); }
 dialog textarea {
   display: block; width: calc(100% - 32px); margin: 10px 16px; height: 46vh;
-  font: 13px/1.55 ui-monospace, Menlo, monospace; color: var(--text);
+  /* 16px is the floor below which iOS Safari zooms the whole page on focus. */
+  font: 16px/1.5 ui-monospace, Menlo, monospace; color: var(--text);
   background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px;
 }
 dialog .dact { display: flex; gap: 8px; justify-content: flex-end; padding: 0 16px 14px; }
