@@ -175,11 +175,15 @@ body.chrome-off .slot-head { top: 0; padding-top: calc(6px + var(--safe-t)); }
 body.chrome-off .bar { transform: translateY(100%); }
 body.chrome-off .fab { transform: translateY(calc(56px + var(--safe-b))); }
 
-/* Timetable grid (time × track): default on desktop, opt-in on mobile via the layout toggle. */
+/*
+ * Timetable grid (time × track). Column sizes come from fitGrid() in JS: when every track fits,
+ * columns share the width and column heads stick to the top; otherwise the grid scrolls sideways
+ * with the time column pinned and a sliver of the next column peeking in.
+ */
 main.wide { max-width: 1400px; }
 .grid {
-  display: grid; column-gap: 10px;
-  grid-template-columns: 52px repeat(var(--cols), minmax(0, 1fr));
+  display: grid; column-gap: var(--gap, 10px);
+  grid-template-columns: var(--tcol, 52px) repeat(var(--cols), var(--colw, minmax(0, 1fr)));
 }
 .grid .colhead {
   position: sticky; top: var(--head-h); z-index: 6; background: var(--bg);
@@ -200,6 +204,25 @@ body.chrome-off .grid .colhead { top: 0; }
 .grid .star { width: 44px; }
 .grid .star svg { width: 24px; height: 24px; }
 
+.grid.compact .orig { display: none; }
+.grid.compact .tl { font-size: 12px; }
+.grid.compact .title { font-size: 14.5px; }
+.grid.compact .card .body { padding: 9px 2px 9px 10px; }
+.grid.compact .star { width: 40px; padding-top: 8px; }
+
+.grid-scroll.scrolls {
+  overflow-x: auto; margin: 0 calc(-1 * var(--main-pad)); padding-right: var(--main-pad);
+  scroll-snap-type: x mandatory; scroll-padding-left: calc(var(--tcol) + var(--gap));
+  overscroll-behavior-x: contain;
+}
+.grid-scroll.scrolls .grid { width: max-content; }
+.grid-scroll.scrolls .colhead { position: static; scroll-snap-align: start; }
+.grid-scroll.scrolls .colhead:first-child,
+.grid-scroll.scrolls .tl {
+  position: sticky; left: 0; z-index: 4; background: var(--bg);
+  padding-left: var(--main-pad); box-shadow: var(--gap) 0 0 var(--bg);
+}
+
 .layout-btn {
   flex: none; width: 34px; height: 32px; border-radius: 9px; background: var(--line); color: var(--sub);
   display: inline-flex; align-items: center; justify-content: center;
@@ -207,29 +230,10 @@ body.chrome-off .grid .colhead { top: 0; }
 .layout-btn svg { width: 18px; height: 18px; }
 .layout-btn[hidden] { display: none; }
 
+main { --main-pad: 12px; }
 @media (min-width: 900px) {
-  main.wide { padding: 4px 20px 0; }
+  main.wide { --main-pad: 20px; padding: 4px 20px 0; }
   .seg { flex: 0 1 360px; margin-left: auto; }
-}
-
-/*
- * Narrow screens: columns keep a readable width and the grid scrolls sideways inside its own
- * container, with the time column pinned to the left. Vertical stickiness of the column heads is
- * dropped because an overflow-x container cannot stick to the page viewport.
- */
-@media (max-width: 899px) {
-  .grid-scroll {
-    overflow-x: auto; margin: 0 -12px; padding: 0 12px 0 0;
-    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
-  }
-  .grid { grid-template-columns: 46px repeat(var(--cols), minmax(max(62vw, 210px), 1fr)); column-gap: 8px; width: max-content; min-width: 100%; }
-  .grid .colhead { position: static; scroll-snap-align: start; scroll-margin-left: 54px; font-size: 12px; }
-  .grid .colhead:first-child, .grid .tl { position: sticky; left: 0; z-index: 4; background: var(--bg); padding-left: 8px; }
-  .grid .tl { font-size: 12px; padding-left: 6px; box-shadow: 8px 0 0 var(--bg); }
-  .grid .orig { display: none; }
-  .grid .title { font-size: 14.5px; }
-  .grid .card .body { padding: 9px 2px 9px 10px; }
-  .grid .star { width: 40px; padding-top: 8px; }
 }
 .toast {
   position: fixed; left: 50%; bottom: calc(90px + var(--safe-b)); z-index: 50;
@@ -609,7 +613,11 @@ function render() {
       }
     }
   }
+  const keepX = el.querySelector('.grid-scroll')?.scrollLeft ?? 0
   el.innerHTML = html
+  fitGrid()
+  const gs = el.querySelector('.grid-scroll')
+  if (gs) gs.scrollLeft = keepX
 
   const nb = bad.size
   document.getElementById('count').innerHTML = `已选 <b>${state.picks.length}</b> 场${nb ? `<br><span class="cf">${nb} 场冲突</span>` : ''}`
@@ -654,6 +662,39 @@ function gridHtml(now, bad) {
     html += `<div class="cell${items.length > 1 ? '' : ' single'}" style="grid-row:${row(s.start)}/${row(s.end)};grid-column:${Math.min(...idx) + 2}/${Math.max(...idx) + 3}">${head}${items.map(x => cardHtml(x, now, bad)).join('')}</div>`
   }
   return html + '</div></div>'
+}
+
+/**
+ * Sizes timetable columns from the space actually available. Fits as many columns as the comfortable
+ * minimum width allows; if that is every track, they share the width with no scrolling. Otherwise the
+ * visible columns shrink just enough to reveal a peek of the next one, hinting at sideways scrolling.
+ * Narrow columns also switch cards to a compact style.
+ */
+function fitGrid() {
+  const scroller = document.querySelector('.grid-scroll')
+  if (!scroller) return
+  const grid = scroller.firstElementChild
+  const cols = Number(grid.style.getPropertyValue('--cols'))
+  const main = document.getElementById('list')
+  const pad = parseFloat(getComputedStyle(main).paddingLeft)
+  const avail = main.clientWidth - 2 * pad
+  const phone = avail < 600
+  const tcol = phone ? 46 : 52
+  const gap = phone ? 8 : 10
+  const minCol = phone ? 250 : 230
+  const peek = phone ? 28 : 40
+  const fit = Math.max(1, Math.floor((avail - tcol) / (minCol + gap)))
+  const scrolls = fit < cols
+  const colw = scrolls
+    ? (avail + pad - tcol - peek - gap) / fit - gap
+    : (avail - tcol) / cols - gap
+  scroller.classList.toggle('scrolls', scrolls)
+  grid.classList.toggle('compact', colw < 290)
+  grid.style.setProperty('--tcol', `${tcol + (scrolls ? pad : 0)}px`)
+  grid.style.setProperty('--gap', `${gap}px`)
+  grid.style.setProperty('--colw', `${Math.floor(colw)}px`)
+  scroller.style.setProperty('--tcol', `${tcol + (scrolls ? pad : 0)}px`)
+  scroller.style.setProperty('--gap', `${gap}px`)
 }
 
 function extrasHtml() {
@@ -863,6 +904,7 @@ function setupAutoHide() {
 
 renderChips()
 render()
+new ResizeObserver(fitGrid).observe(document.getElementById('list'))
 syncHeadHeight()
 setupAutoHide()
 desktop.addEventListener('change', () => { render(); syncHeadHeight() })
