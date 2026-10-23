@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vue Fes 2026">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111513" media="(prefers-color-scheme: dark)">
+<title>Vue Fes Japan 2026 · 中文日程</title>
+<style>
+:root {
+  --bg: #f4f6f5;
+  --card: #ffffff;
+  --text: #17201c;
+  --sub: #5d6964;
+  --faint: #8c9792;
+  --line: #e2e7e4;
+  --accent: #2f9e6e;
+  --accent-soft: #e3f4ec;
+  --warn: #c2410c;
+  --warn-soft: #fff1e8;
+  --t1: #e0567a;
+  --t2: #2f9e6e;
+  --t3: #2f7ae0;
+  --t4: #d18a12;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1210;
+    --card: #181e1b;
+    --text: #e8eeeb;
+    --sub: #a3aea9;
+    --faint: #6f7a75;
+    --line: #27302c;
+    --accent: #4cc38a;
+    --accent-soft: #1b3328;
+    --warn: #fb923c;
+    --warn-soft: #3a2316;
+    --shadow: none;
+  }
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Noto Sans CJK SC", sans-serif;
+  padding-bottom: calc(96px + var(--safe-b));
+}
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; padding: 0; }
+a { color: var(--accent); }
+
+header.top {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
+  padding: calc(8px + var(--safe-t)) 12px 8px;
+  border-bottom: .5px solid var(--line);
+  transition: transform .25s ease;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand h1 { font-size: 17px; margin: 0; letter-spacing: -.01em; white-space: nowrap; line-height: 1.2; }
+.brand h1 span { color: var(--accent); }
+.brand h1 small { display: block; color: var(--sub); font-size: 11px; font-weight: 400; }
+
+.seg {
+  flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--line); border-radius: 9px; padding: 2px;
+}
+.seg button { padding: 6px 0; border-radius: 7px; font-size: 13.5px; font-weight: 600; color: var(--sub); }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+
+.chips { display: flex; gap: 6px; overflow-x: auto; margin: 8px -12px 0; padding: 0 12px 1px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; padding: 4px 10px; border-radius: 99px;
+  background: var(--card); border: 1px solid var(--line); color: var(--sub);
+}
+.chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.chip[aria-pressed="true"] { border-color: var(--c, var(--accent)); color: var(--text); background: color-mix(in srgb, var(--c, var(--accent)) 14%, var(--card)); }
+
+main { padding: 4px 12px 0; max-width: 760px; margin: 0 auto; }
+.note { font-size: 12.5px; color: var(--sub); margin: 12px 4px; }
+
+.slot { margin-top: 14px; }
+.slot-head {
+  position: sticky; top: var(--head-h, 150px); z-index: 5;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 4px; background: var(--bg);
+  font-weight: 700; font-variant-numeric: tabular-nums;
+  transition: top .25s ease;
+}
+.slot-head .now-pill { font-size: 11px; font-weight: 700; color: #fff; background: #e5484d; border-radius: 99px; padding: 1px 7px; }
+.slot-head .rest { color: var(--faint); font-weight: 400; font-size: 13px; }
+
+.card {
+  position: relative; display: flex; gap: 0;
+  background: var(--card); border-radius: 14px; box-shadow: var(--shadow);
+  margin: 8px 0; overflow: hidden;
+  border: 1px solid transparent;
+}
+.card::before { content: ""; width: 4px; flex: none; background: var(--c, var(--faint)); }
+.card.picked { border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.card.cancel { opacity: .55; }
+.card.cancel .title { text-decoration: line-through; }
+.card.info { background: transparent; box-shadow: none; border: 1px dashed var(--line); }
+.card .body { flex: 1; min-width: 0; padding: 11px 4px 11px 12px; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--sub); font-variant-numeric: tabular-nums; }
+.tag { font-size: 11px; padding: 1px 6px; border-radius: 5px; background: var(--line); color: var(--sub); }
+.tag.track { background: color-mix(in srgb, var(--c) 15%, transparent); color: var(--c); font-weight: 600; }
+.tag.live { background: #e5484d; color: #fff; }
+.tag.warn { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
+.title { font-size: 16px; font-weight: 650; line-height: 1.38; margin: 4px 0 2px; }
+.orig { font-size: 12px; color: var(--faint); line-height: 1.4; }
+.who { font-size: 13.5px; color: var(--sub); margin-top: 5px; }
+.who b { color: var(--text); font-weight: 600; }
+.more { display: none; margin-top: 8px; font-size: 14px; line-height: 1.65; }
+.card.open .more { display: block; }
+.more p { margin: 0 0 8px; }
+.more ul { margin: 0 0 8px; padding-left: 18px; color: var(--sub); font-size: 13px; }
+.more .extra { font-size: 13px; color: var(--accent); background: var(--accent-soft); padding: 6px 9px; border-radius: 8px; }
+.toggle-more { font-size: 12.5px; color: var(--accent); margin-top: 6px; padding: 4px 0; }
+.star {
+  flex: none; width: 52px; display: flex; align-items: flex-start; justify-content: center; padding-top: 10px;
+  color: var(--faint);
+}
+.star svg { width: 28px; height: 28px; transition: transform .15s; }
+.star[aria-pressed="true"] { color: var(--accent); }
+.star[aria-pressed="true"] svg { transform: scale(1.08); }
+.star:active svg { transform: scale(.85); }
+
+.gap { margin: 10px 4px; padding: 8px 12px; border-radius: 10px; font-size: 13px; color: var(--faint); border: 1px dashed var(--line); }
+.empty { text-align: center; color: var(--sub); padding: 48px 16px; line-height: 1.8; }
+
+.extras { margin: 28px 4px 0; font-size: 13.5px; color: var(--sub); }
+.extras h3 { font-size: 14px; color: var(--text); margin: 0 0 6px; }
+.extras li { margin-bottom: 4px; }
+footer { margin: 24px 4px 0; font-size: 12px; color: var(--faint); }
+
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  padding: 7px 12px calc(7px + var(--safe-b));
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
+  border-top: .5px solid var(--line);
+  display: flex; gap: 8px; align-items: center;
+  transition: transform .25s ease;
+}
+.bar .count { flex: 1; font-size: 13px; color: var(--sub); line-height: 1.3; min-width: 0; }
+.bar .count b { color: var(--text); font-size: 17px; }
+.bar .count .cf { color: var(--warn); }
+.btn { padding: 8px 11px; border-radius: 11px; font-size: 14px; font-weight: 600; background: var(--line); white-space: nowrap; }
+.btn.primary { background: var(--accent); color: #fff; }
+.btn:disabled { opacity: .4; }
+
+.fab {
+  position: fixed; right: 14px; bottom: calc(76px + var(--safe-b)); z-index: 25;
+  background: #e5484d; color: #fff; font-size: 13px; font-weight: 700;
+  padding: 8px 13px; border-radius: 99px; box-shadow: 0 4px 14px rgba(229,72,77,.35);
+  transition: transform .25s ease;
+}
+body.chrome-off header.top { transform: translateY(-100%); }
+body.chrome-off .slot-head { top: 0; padding-top: calc(6px + var(--safe-t)); }
+body.chrome-off .bar { transform: translateY(100%); }
+body.chrome-off .fab { transform: translateY(calc(56px + var(--safe-b))); }
+
+/* Desktop: time × track grid so parallel sessions sit side by side. */
+@media (min-width: 900px) {
+  main.wide { max-width: 1400px; padding: 4px 20px 0; }
+  .seg { flex: 0 1 360px; margin-left: auto; }
+  .grid {
+    display: grid; column-gap: 10px;
+    grid-template-columns: 52px repeat(var(--cols), minmax(0, 1fr));
+  }
+  .grid .colhead {
+    position: sticky; top: var(--head-h); z-index: 6; background: var(--bg);
+    font-size: 13px; font-weight: 700; padding: 10px 6px 6px; border-bottom: 3px solid var(--c);
+    transition: top .25s ease;
+  }
+  body.chrome-off .grid .colhead { top: 0; }
+  .grid .tl {
+    grid-column: 1; margin: 0; font-size: 13px; font-weight: 700; color: var(--sub);
+    padding-top: 10px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums;
+  }
+  .grid .tl.live { color: #e5484d; }
+  .grid .cell { display: flex; flex-direction: column; gap: 6px; padding: 5px 0; min-width: 0; }
+  .grid .cell .card { margin: 0; }
+  .grid .cell.single .card { flex: 1; }
+  .grid .cell .group-head { font-size: 12px; font-weight: 700; color: var(--sub); padding: 2px 4px; }
+  .grid .title { font-size: 15px; }
+  .grid .star { width: 44px; }
+  .grid .star svg { width: 24px; height: 24px; }
+}
+.toast {
+  position: fixed; left: 50%; bottom: calc(90px + var(--safe-b)); z-index: 50;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: rgba(20,24,22,.92); color: #fff; font-size: 14px; padding: 9px 16px; border-radius: 99px;
+  transition: .25s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+dialog {
+  border: 0; border-radius: 16px; padding: 0; width: min(92vw, 560px);
+  background: var(--card); color: var(--text);
+}
+dialog::backdrop { background: rgba(0,0,0,.4); }
+dialog .dhead { padding: 14px 16px 6px; font-weight: 700; }
+dialog .dhint { padding: 0 16px; font-size: 13px; color: var(--sub); }
+dialog textarea {
+  display: block; width: calc(100% - 32px); margin: 10px 16px; height: 46vh;
+  font: 13px/1.55 ui-monospace, Menlo, monospace; color: var(--text);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px;
+}
+dialog .dact { display: flex; gap: 8px; justify-content: flex-end; padding: 0 16px 14px; }
+</style>
+</head>
+<body>
+<header class="top" id="top">
+  <div class="brand">
+    <h1>Vue Fes <span>2026</span><small>10/24（六）大手町</small></h1>
+    <div class="seg" role="group">
+      <button id="viewAll" aria-pressed="true">全部日程</button>
+      <button id="viewMine" aria-pressed="false">我的日程</button>
+    </div>
+  </div>
+  <div class="chips" id="chips"></div>
+</header>
+
+<main id="list"></main>
+
+<button class="fab" id="nowBtn" hidden>● 跳到现在</button>
+
+<div class="bar">
+  <div class="count" id="count"></div>
+  <button class="btn" id="importBtn">导入</button>
+  <button class="btn" id="copyList">复制清单</button>
+  <button class="btn primary" id="copyPlan">复制全天计划</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<dialog id="imp">
+  <div class="dhead">导入日程</div>
+  <div class="dhint">粘贴从另一台设备「复制清单」或「复制全天计划」得到的文本。</div>
+  <textarea id="impText" placeholder="在这里粘贴…"></textarea>
+  <div class="dact">
+    <button class="btn" id="impCancel">取消</button>
+    <button class="btn" id="impMerge">合并</button>
+    <button class="btn primary" id="impReplace">替换</button>
+  </div>
+</dialog>
+
+<dialog id="dlg">
+  <div class="dhead">复制文本</div>
+  <div class="dhint">自动复制失败了，请长按下方文本 → 全选 → 拷贝。</div>
+  <textarea id="dlgText" readonly></textarea>
+  <div class="dact">
+    <button class="btn" id="dlgShare" hidden>分享…</button>
+    <button class="btn primary" id="dlgClose">完成</button>
+  </div>
+</dialog>
+
+<script>
+/**
+ * Vue Fes Japan 2026 schedule (Chinese edition).
+ * Source: https://vuefes.jp/2026/timetable (fetched 2026-10-24, JST).
+ * Titles and summaries are translated / condensed from the official Japanese text.
+ */
+const OFFICIAL = 'https://vuefes.jp/2026'
+const DATE = '2026-10-24'
+
+const TRACKS = {
+  t1: { name: 'hacomono', full: 'ウェルネス×hacomono トラック', color: 'var(--t1)' },
+  t2: { name: 'Vue', full: 'Vue トラック', color: 'var(--t2)' },
+  t3: { name: 'サイボウズ', full: 'サイボウズ トラック', color: 'var(--t3)' },
+  t4: { name: 'メドピア', full: 'メドピア トラック', color: 'var(--t4)' },
+}
+
+const KIND = {
+  keynote: '主题演讲', session: '演讲', sponsor: '白金赞助演讲', student: '学生支援赞助演讲',
+  lunch: '午餐赞助 LT', panel: '圆桌讨论', lt: '闪电演讲 LT', handson: '动手实践', event: '活动', info: '日程',
+}
+
+/** `group` marks talks that run back-to-back in one block, so they never count as conflicts with each other. */
+const S = [
+  { id: 'reception', start: '09:00', end: '10:00', tracks: ['t1', 't2', 't3', 't4'], kind: 'info', title: '开场・签到', ja: '開場・受付' },
+  { id: 'opening', start: '10:00', end: '10:10', tracks: ['t1', 't2'], kind: 'event', title: '开幕式', ja: 'オープニング' },
+  { id: 'keynote', start: '10:10', end: '10:50', tracks: ['t1', 't2'], kind: 'keynote', title: '主题演讲', ja: 'キーノート',
+    speakers: [['Evan You', 'VoidZero', 'CEO']],
+    summary: 'Vue.js 与 Vite 的作者、VoidZero CEO Evan You 的年度主题演讲。' },
+
+  { id: 'platinum-sponsor-session-1', start: '10:55', end: '11:05', tracks: ['t1'], kind: 'sponsor',
+    title: '开发「设计」：用 Vue 改进设计流程', ja: 'デザインを開発する ~ Vueで実現するデザインプロセス改善 ~',
+    speakers: [['竹井啓', '株式会社リンクアンドモチベーション', '设计工程师']], url: '/speaker/keeeeeei200',
+    summary: '生成式 AI 让设计师写代码、工程师参与设计成为常态，但各角色之间"翻译"成果的环节仍然存在。介绍设计师与开发者在同一产出物上协作的原型方法：用线上真实运行的组件搭原型减少翻译损耗，记录决策经过以扩大可交给 AI 的范围。分享 AI × Vue.js 做设计工程的实践。' },
+  { id: 'platinum-sponsor-session-2', start: '10:55', end: '11:05', tracks: ['t2'], kind: 'sponsor', title: '待定（TBD）', ja: 'TBD' },
+  { id: 'platinum-sponsor-session-3', start: '11:05', end: '11:15', tracks: ['t1'], kind: 'sponsor',
+    title: '用「契约」守护复合型产品的设计系统', ja: '契約で守るコンパウンドプロダクトのデザインシステム',
+    speakers: [['山口 祐司', 'Dress Code株式会社', '产品工程师']], url: '/speaker/yug1224',
+    summary: '横跨多个领域的复合型产品里，即使组件统一，token 用法和组件职责也会逐渐走样；文档规约 + Review 跟不上代码增长。他们把设计系统本体做成基于 Schema 的契约，用 Schema Driven UI 让同一 Schema 还原出同样的前端：非 token 值由类型检查拦截，跨层依赖由依赖检查拦截，人工评审只留给机器判断不了的部分。' },
+  { id: 'platinum-sponsor-session-4', start: '11:05', end: '11:15', tracks: ['t2'], kind: 'sponsor',
+    title: '不停机把 CloudSign 迁到 Nuxt：为下一个十年先定下的事', ja: 'クラウドサインを止めずに Nuxt へ、次の10年のために先に決めたこと',
+    speakers: [['篠田貴大', '弁護士ドットコム株式会社', '前端工程师']], url: '/speaker/tttttt_621_s',
+    summary: 'CloudSign 是 2015 年上线的电子合同云服务，运行十余年不能停。团队正以页面为单位从 Revel Template 迁移到 Nuxt：约 150 个页面、跨年项目，与 AI 一起推进。先把团队成功指标定为"功能开发交付周期"，再由此推导出新旧切换机制和迁移状态比对检查。分享判断标准与路线。' },
+  { id: 'platinum-sponsor-session-5', start: '11:15', end: '11:25', tracks: ['t1'], kind: 'sponsor',
+    title: 'Astro 就是新的 WordPress', ja: 'Astro is the new WordPress',
+    speakers: [['Matt Kane', 'Cloudflare', '高级首席工程师']], url: '/speaker/ascorbic',
+    summary: '如果 WordPress 在 2026 年从零设计会是什么样？它支撑着 43% 的 Web，但 20 年前的架构让插件可以无限制访问数据和基础设施，部署方式也已过时。EmDash 基于 Astro 与 Vite 从根本上重建这一模型：内容优先架构 + 灵活托管 + 沙箱化插件 + 同时面向人类编辑与 AI Agent 的工作流。' },
+  { id: 'platinum-sponsor-session-6', start: '11:15', end: '11:25', tracks: ['t2'], kind: 'sponsor',
+    title: '组件生命周期与全局状态的处理方式', ja: 'コンポーネントのライフサイクルとグローバル状態の扱い方',
+    speakers: [['矢光 隆太郎', 'ユニークビジョン株式会社', 'Chief Architect']], url: '/speaker/RyutaroYako',
+    summary: 'VueUse 的 composable 默认在组件内使用，卸载时自动清理。若在自制 composable 中把它做成单例，第一个调用者卸载后会出现"变量还在、内部已坏"的隐蔽 bug。调查中发现 VueUse 早就提供了 createGlobalState。基于踩坑经历讲 Vue 生命周期下 composable 的正确用法。' },
+
+  { id: 'lunch', start: '11:25', end: '12:50', tracks: ['t1', 't2'], kind: 'info', title: '午餐时间', ja: 'ランチタイム',
+    summary: '会场只在「午餐赞助 LT」提供限量免费午餐（先到先得），其余需自行解决；周边餐厅预计拥挤，留好时间。' },
+  { id: 'student-support-sponsor-session-1', start: '11:30', end: '12:00', tracks: ['t4'], kind: 'student', group: 'student',
+    title: '从应届生上手成本出发，决定迁移到 Nuxt 3', ja: '新卒のキャッチアップコストから決めたNuxt 3移行',
+    speakers: [['宮崎喬行', '株式会社アイキューブドシステムズ', '前端工程师']], url: '/speaker/takayuki-miyazaki',
+    summary: '公司做 MDM 产品，管理后台用 Nuxt。新人增多，但实际工作写 Nuxt 2，而文章、文档、生成式 AI 都以 Nuxt 3 为前提，这个落差成了上手负担。分享决定迁移前的思考、实际推进方式，以及迁移后才发现的意外。' },
+  { id: 'student-support-sponsor-session-2', start: '11:30', end: '12:00', tracks: ['t4'], kind: 'student', group: 'student',
+    title: '用 Slidev 迈出 Vue 与 LT 的第一步', ja: 'Slidevで踏み出すVueとLTの第一歩',
+    speakers: [['永渕 景祐', '株式会社サポーターズ', '软件工程师']], url: '/speaker/fuchio-gt',
+    summary: '公司技术栈没有 Vue，他本人也没写过 Vue 就接下了这次 LT。从做幻灯片开始：用 Vue 制的 Slidev 制作本场幻灯片，讲只靠做幻灯片能接触 Vue 到什么程度、新手在哪里卡住；并以入职第 3 年、反复"举手接下没做过的事"为例，谈如何迈出小小的第一步。' },
+  { id: 'lunch-sponsor-lt-1', start: '11:40', end: '11:45', tracks: ['t3'], kind: 'lunch',
+    title: 'npm 供应链被盯上的一年：金融系统中的防御实践', ja: 'npmサプライチェーンが狙われた1年 ─ 金融システムで実践している防御策',
+    speakers: [['揚野将士', '株式会社デジタルバリュー', '前端工程师']], url: '/speaker/masashi-ageno',
+    summary: '你是不是战战兢兢地敲 install？过去一年 npm 生态接连发生大规模供应链攻击。主要开发金融系统的他们这一年持续推进对策。5 分钟讲清如何面对供应链风险、如何把对策落进开发流程——适用于所有使用 npm 的项目。',
+    extra: '🍱 附免费午餐（先到先得、数量有限），想要的话早点去。' },
+  { id: 'student-support-contents', start: '12:00', end: '12:30', tracks: ['t4'], kind: 'event',
+    title: '学生支援限定午餐会', ja: '学生支援限定ランチ会', url: '/event#student-support-contents',
+    summary: '面向学生的交流午餐：可与 Vue.js 社区核心成员、OSS 一线工程师和赞助企业直接聊技术困惑与职业规划。',
+    extra: '仅限事先申请并入选的学生参加。' },
+
+  { id: 'session-1', start: '12:50', end: '13:20', tracks: ['t1'], kind: 'session',
+    title: '类型安全的 URL', ja: 'Type-Safe URLs',
+    speakers: [['Eduardo San Martin Morote (Posva)', 'Vercel', 'Vue.js Core Team']], url: '/speaker/posva',
+    summary: '下一版 Vue Router 将把 URL 当作完全类型化的状态。介绍如何从 path、query、hash 中提取、转换、校验参数，把原始字符串变成数字、对象等应用需要的任意形态。' },
+  { id: 'session-2', start: '12:50', end: '13:20', tracks: ['t2'], kind: 'session',
+    title: '从 Astro 与 Rust 看前端工具链的现在', ja: 'AstroとRustで考えるフロントエンドツールチェーンの今',
+    speakers: [['jp-knj', '株式会社プレイド', '设计工程师']], url: '/speaker/jp-knj',
+    summary: 'Astro 7 的编译器从 Go 迁到了 Rust——只因为更快吗？Build、Editor、Linter、Formatter 等工具以不同方式作用于同一份代码，所需信息与"正确"标准各不相同。以 Astro 编译器与 Markdown/MDX 管线的变化为线索，探讨 Astro 想用 Rust 打造怎样的开发基础设施；并分享自己提案、试做 Markdown/MDX 编译器、与成员讨论中修正自身前提的经历。' },
+  { id: 'session-3', start: '12:50', end: '13:20', tracks: ['t3'], kind: 'session',
+    title: 'JS 能少写这么多！2026 最新 HTML・CSS 技术', ja: 'JSがこんなに減る！ HTML・CSS最新技術2026',
+    speakers: [['池田 泰延', '株式会社ICS', '前端工程师']], url: '/speaker/ics-ikeda',
+    summary: '过去依赖 JS 库的 UI，如今用原生 HTML/CSS 就能写。以汉堡菜单为例，讲以 dialog 为核心的实现，并说明哪些部分可以不写 JS、哪些仍该写，以及与 Vue/React 状态管理结合时的注意点。',
+    list: ['dialog、popover、可定制 select、CSS 轮播', 'command / commandfor 属性', '@starting-style、transition-behavior: allow-discrete', 'sibling-index()、attr()', ':target-current 伪类', '锚点定位（Anchor Positioning）', '滚动驱动动画'] },
+  { id: 'hands-on', start: '12:50', end: '14:50', tracks: ['t4'], kind: 'handson',
+    title: '动手实践：用 chibivue 学前端框架原理', ja: 'ハンズオン', url: '/event#hands-on',
+    summary: '使用 Vue.js 学习教材 chibivue，亲手实现响应式、虚拟 DOM 等核心机制，看见"只用库时看不到的部分"。Vue 用户和其他框架用户都适合。',
+    extra: '需「一般票 + 动手实践票（¥500）」，仅日语进行，名额有限先到先得；当天参加者有限定周边。' },
+
+  { id: 'session-4', start: '13:35', end: '14:05', tracks: ['t1'], kind: 'session',
+    title: '从 Nuxt Content 到 Ox Content：1000+ 页博客基础设施的重构挑战', ja: 'Nuxt ContentからOxContentへ、1000ページ超のブログ基盤刷新への挑戦',
+    speakers: [['Yutaro Koizumi', '株式会社アンドパッド', 'Tech Lead']], url: '/speaker/ykoizumi0903',
+    summary: '用 Nuxt Content + NuxtHub 运营 1000 多页的博客，文档数增长带来性能与维护性恶化。于是在 Nuxt 4 站点中引入 Rust 制的新一代工具 Ox Content。介绍原有技术构成与引入成果，也会谈 SSR→SSG、换框架等未采纳方案与选型视角，以及个人开发可以轻松尝鲜的乐趣。' },
+  { id: 'session-5', start: '13:35', end: '14:05', tracks: ['t2'], kind: 'session',
+    title: 'Vite Task 的缓存魔法', ja: 'Vite Task’s Cache Magic',
+    speakers: [['Charles Wang', 'VoidZero', '软件工程师']], url: '/speaker/wan9chi',
+    summary: '传统任务缓存需要开发者手动声明输入输出，并持续维护其正确性。Vite Task（Vite+ 的任务运行器）致力于消除这些手工活，让缓存像魔法一样准确。讲解缓存系统背后的思路，并现场演示其易用性与正确性。' },
+  { id: 'session-6', start: '13:35', end: '14:05', tracks: ['t3'], kind: 'session',
+    title: '为什么那个 UI 动画让人觉得舒服？', ja: 'なぜその UI アニメーションは気持ちいいのか？',
+    speakers: [['Katashin', 'kinew', 'CTO']], url: '/speaker/ktsn',
+    summary: '移动 App 自带精致动画，Web 动画却大多要自己实现；View Transition API 等虽方便，"怎么动"仍靠品味与知识。分析 UI 动画"舒适感"的成因及落地方法，并展示用 Vue.js 实现的移动 App 常见 UI，让你亲身体会。' },
+
+  { id: 'session-7', start: '14:20', end: '14:50', tracks: ['t1'], kind: 'session',
+    title: '为 Vite+ 做贡献，以及成为 Team Member 后看到的风景', ja: 'Vite+への貢献と、Team Memberになって見えてきた風景',
+    speakers: [['Naoki Haba', '株式会社アンドパッド', 'Vite+ 团队成员']], url: '/speaker/naokihaba',
+    summary: '2026 年 4 月起成为 Vite+ Team Member：做过 Node.js 版本管理迁移支持、tsdown 迁移、TS 配置自动转换、Vue/Astro 类型支持等，如今日常处理全球 Issue 分诊与 PR Review。结合实例分享从外部贡献者到 Team Member 的历程，并思考在 AI 降低写代码门槛的当下"深入理解"的价值。' },
+  { id: 'session-8', start: '14:20', end: '14:50', tracks: ['t2'], kind: 'session',
+    title: '用 Vue 写空间计算：TresJS + WebXR 的 XR 设备前端开发', ja: 'Vue で書く 空間コンピューティング、TresJS と WebXR を使ったXR デバイスのフロントエンド開発',
+    speakers: [['平沼 真吾', '株式会社GENEROSITY', 'CTO']], url: '/speaker/hiranuma',
+    summary: '用 Vue + TresJS + WebXR 就能写出运行在 Meta Quest 3、Samsung Galaxy XR 上的空间计算应用，沿用 Composition API 知识即可。分享视线与手势操作、声明式场景构建、手部追踪与手柄双支持、物理引擎集成等 XR 前端实现模式。' },
+  { id: 'session-9', start: '14:20', end: '14:50', tracks: ['t3'], kind: 'session',
+    title: '从 Vue SFC 重新审视如何守护正确的 HTML', ja: 'Vue SFCから見直す正しいHTMLの守り方',
+    speakers: [['やまのく', '', '公司职员']], url: '/speaker/yamanoku',
+    summary: 'SFC template 中的元素嵌套违规在开发时只会警告、不会编译报错，对具体元素用法也不做检查。从原理拆解编译器如何解析 template，并介绍如何用 ESLint、Markuplint、Biome、Oxc、Vize 等静态分析生态守护 DOM 编译器管不到的 HTML 正确性，写出健壮且无障碍的标记。' },
+
+  { id: 'session-10', start: '15:05', end: '15:35', tracks: ['t1'], kind: 'session',
+    title: '重新构想 Vue 工具链', ja: 'The Vue Toolchain, Reimagined',
+    speakers: [['ubugeeei', 'Vite+、Vue.js、株式会社メイツ', 'Vize、chibivue 作者']], url: '/speaker/ubugeeei',
+    summary: 'Vize 是一个从零构建高速 Vue 全套工具链的开源项目（Rust 制，横跨 compiler、linter、typechecker、formatter、story、LSP）。在开发这些工具时，正因纵览整条工具链才看到的问题与新可能。介绍 Vize 的工作，谈 Vue 工具链的现在与未来。' },
+  { id: 'session-11', start: '15:05', end: '15:35', tracks: ['t2'], kind: 'session',
+    title: '用 Vue.js 做空间分析 App 与 Capacitor 插件的 Data Bridge', ja: 'Vue.jsで作る空間解析アプリとCapacitorプラグインのData Bridge',
+    speakers: [['Hal', '', '软件工程师']], url: '/speaker/Hal-Spidernight',
+    summary: 'Lynx 支持 Vue 3、Capacitor 原生层支持完善，Web 工程师做移动 App 门槛大降，但 AVCaptureDevice、ARKit 等原生 API 仍够不着——那就自己写插件！可 LiDAR 点云这类数据在 JS⇄原生之间传输量巨大。以 AR / LiDAR 空间分析 App 为主线，讲传输效率优化与高效调用原生 API 的插件设计。' },
+  { id: 'session-12', start: '15:05', end: '15:35', tracks: ['t3'], kind: 'session',
+    title: '从 TanStack Query Vue 与 Pinia Colada 学异步状态的类型设计', ja: 'TanStack Query VueとPinia Coladaから学ぶ非同期状態の型設計',
+    speakers: [['aoshi', '株式会社ヤプリ', '前端工程师']], url: '/speaker/is78-dev',
+    summary: '两库处理异步状态的 API 不同，例如判断 query 状态后 TS 里 data 仍可能含 undefined。以 API 设计为起点，梳理类型呈现由什么决定；以 useQuery + reactive 的类型收窄、Pinia Colada 的 state 设计为例，串起 ref、toRefs、reactive 与 discriminated union 的关系。' },
+  { id: 'session-13', start: '15:05', end: '15:35', tracks: ['t4'], kind: 'session',
+    title: '确定性的前端架构才是好架构', ja: '決定的なフロントエンドアーキテクチャがいい',
+    speakers: [['辻佳佑', '弁護士ドットコム株式会社', '软件工程师']], url: '/speaker/t0daaay',
+    summary: '"放 xxx 目录？""抽 utils？""做成 composable？""别用 watch 改 computed？"——AI 加速开发的今天，这些还要逐条讨论吗？他们的 Nuxt 新产品把文件/函数位置、命名、API 用法尽可能确定性地约定，并用 linter 设护栏，结果大多数 PR 几分钟就能 review 完，不熟前端的人也能开发。' },
+
+  { id: 'panel-discussion-1', start: '15:50', end: '16:50', tracks: ['t1'], kind: 'panel',
+    title: '重新审视 JavaScript 生态的边界', ja: 'JavaScriptエコシステムの境界線を問い直す',
+    speakers: [['Evan You', 'VoidZero', 'CEO'], ['古川 陽介', 'リクルート / ニジボックス', 'Japan Node.js Association 代表理事'], ['Alistair Smith', 'Anthropic', 'Member of Technical Staff'], ['Leo Kettmeir', 'Denoland', '']],
+    facilitators: [['re-taro', '株式会社WinTicket', 'Web Tech Lead']], url: '/event',
+    summary: 'JS 生态中各工具都在超越原有角色，边界越来越模糊。一个工具该自己承担到哪、哪些交给其他工具或标准？兼容性与独特价值、技术演进与开放生态的可持续如何兼顾？以工具之间、实现与标准、项目与社区之间的"边界"为线索，讨论 JS 生态的现在与未来。' },
+  { id: 'panel-discussion-2', start: '15:50', end: '16:50', tracks: ['t2'], kind: 'panel',
+    title: '服务端框架的未来：与 Nitro / Hono / Elysia 回顾「过去・现在・未来」', ja: 'サーバーサイドフレームワークの未来を語る── Nitro / Hono / Elysia と辿る「過去・現在・未来」',
+    speakers: [['Pooya Parsa', 'Vercel', 'Nitro・UnJS・H3 作者'], ['Yusuke Wada', 'Cloudflare', 'Hono 作者'], ['saltyaom', 'Creatorsgarten', 'Elysia 作者']],
+    facilitators: [['Anthony Fu', 'Vercel', '设计工程师']], url: '/event',
+    summary: 'Bun、Deno 等运行时的演进与 AI Agent 的崛起，让 JS/TS 服务端开发与前端的边界日益模糊。三位框架作者回顾设计思想，讨论 AI 时代"开发者体验"与"AI 体验"的关系，以及框架应保持单一功能的轻量部件，还是进化为一站式的综合基座。' },
+  { id: 'session-14', start: '15:50', end: '16:20', tracks: ['t3'], kind: 'session',
+    title: '后端也是响应式的：超越浏览器的 Vue', ja: 'The Backend is Reactive: ブラウザの枠を超える Vue',
+    speakers: [['Marc Backes', 'Directus', '高级软件工程师']], url: '/speaker/themarcba',
+    summary: '如果 Vue 的响应式系统不止于浏览器？在后端用 @vue/reactivity 实时指挥现场数百台手机，把会场变成同步的响应式灯光秀。核心观点：响应式能像管理 UI 状态一样编排后端逻辑——把响应式数据当作单一事实来源，用最少胶水代码驱动多个客户端，computed 让副作用、调度与清理更明确可预测。',
+    extra: '📱 现场手机互动，记得带满电的手机。' },
+  { id: 'session-15', start: '15:50', end: '16:20', tracks: ['t4'], kind: 'session',
+    title: '用 TresJS 与 TSL（WebGPU）复刻 Vue Fes Japan 2025 官网', ja: 'Vue Fes Japan 2025 の Web サイトを TresJS と TSL（WebGPU）で再現する',
+    speakers: [['Alvarosabu', 'TresJS', 'Creative Software Engineer']], url: '/speaker/alvarosabu',
+    summary: '用 Vue + TresJS + 运行在 WebGPU 上的 Three.js Shading Language 复刻 2025 官网主视觉（V 形圆锥 + 日之丸球体 + 再现传统"墨流し"的着色器）。讲如何用 TresJS 组件声明式移植、把 GLSL 迁到 TSL、FBM 噪声在扭曲向量场中流动形成墨流效果，以及换用 WebGPU 带来的变化。',
+    extra: 'Demo：lab.tresjs.org/experiments/vuefes-japan-2025' },
+
+  ...[
+    ['lightning-talk-1', '验证 Vapor Mode 会不会破坏无障碍', 'Vapor Modeでアクセシビリティは壊れないか検証した話', '福田繁之', '株式会社mov', 'Web 工程师', '/speaker/Shigeyuki-fukuda',
+      'Vue 3.6 的 Vapor Mode 不经 VNode 直接操作 DOM，但大家只谈性能，对辅助技术的影响几乎无人验证。将同一组件分别用传统模式与 Vapor Mode 构建，用 Playwright ariaSnapshot 对比无障碍树、用 VoiceOver 实测朗读（live region、焦点管理、动态 aria），给出迁移 Vapor 时的无障碍检查清单。'],
+    ['lightning-talk-2', '你的 await 到达 OS 了吗？用 strace 窥探 JS 异步', 'あなたの await、OS まで届いてる？ strace で覗く JavaScript の非同期', 'Hasuto', 'クラスメソッド株式会社', '后端工程师', '/speaker/HasutoSasaki',
+      '用 strace 把 Node.js 代码看到系统调用层：Promise.resolve() 与 fetch() 的 await 有"下到 OS"和"不下到 OS"之分；串行 fetch 与 Promise.all 的差别在于合并了 epoll_wait 往返。最后联系到 Nuxt useAsyncData / useFetch 串行变慢的场景。'],
+    ['lightning-talk-3', '逃离 v-if 与 flag 地狱：用 Pinia 打造页面状态机', 'v-ifとフラグ地獄からの脱出 — Pinia で作る画面遷移ステートマシン', 'northprint', '株式会社 ICS', '前端工程师', '/speaker/northprint',
+      'N 个 flag 就有 2^N 种状态，连点、重复提交、动画中被打断等 bug 由此而来。改为"当前阶段"1 个 + "能去哪"的路线表——在 defineStore 里放路线表与唯一的切换函数即可。不引入 XState，并说明什么情况下才真正需要 XState。'],
+    ['lightning-talk-4', '火速把 Vite+ 引入公司内部设计系统', 'Vite+を爆速で社内のデザインシステムに導入してみた', 'ぶりお', '', '前端工程师', '/speaker/Koutaro-Hanabusa',
+      'Vite+ 用一个 vp 命令统合测试、lint、格式化、任务执行乃至 Node 管理。他们把还在 α 版的 Vite+ 火速放进了公司设计系统——为什么敢这么做、哪里顺利哪里卡住，坦诚分享。'],
+    ['lightning-talk-5', '从 Vite+ 的小改进学习如何开始 OSS 贡献', 'Vite+のちょっとした改善から学ぶ、OSSコントリビューションの始め方', 'hakshu', '', 'Web 工程师', '/speaker/hakshu25',
+      '以给 vp migrate 补充迁移说明的 PR 为例，结合 Storybook、Oxc 等 PR，介绍如何找贡献对象，以及"只改一件事""关联 issue""PR 写法"等小 PR 礼仪，也谈与 Claude Code 等 AI Agent 的分工边界。'],
+    ['lightning-talk-6', '外国工程师用 Vue 原型对齐需求', '外国人エンジニアがVueプロトタイプで仕様を合わせている話', 'ノワン', '株式会社ヤプリ', '前端工程师', '/speaker/Eluwing',
+      '在日本前端团队工作 9 年的外国工程师，常遇到"以为懂了"后来才发现偏差。如今借助 AI 快速做出可运行的 Vue 组件，用"能动的东西"代替文字说明来达成共识，更早发现认知偏差，也增进了团队信任。'],
+    ['lightning-talk-7', '通过做 Web3D 库理解 Vue Custom Renderer', 'Web3Dライブラリを作ってVue Custom Rendererの仕組みを理解しよう', 'にー兄さん', '株式会社ホロラボ', '软件工程师', '/speaker/drumath2237',
+      'Custom Renderer 能让 Vue SFC 渲染 DOM 以外的东西，但资料少、门槛偏高。介绍开发 Babylon.js 封装库过程中如何运用 custom renderer。'],
+    ['lightning-talk-8', 'Nuxt Layers 到底能做什么、好在哪？', '結局Nuxt Layersって何ができて何が嬉しいの？', 'ryuhei373', '株式会社ノーススター', '工程师', '/speaker/ryuhei373',
+      'Layers 的本质是把 Nuxt 项目构成要素从其他来源整体合成的机制：不只是 monorepo 内功能拆分，还可用于多站点 UI 共享、按环境切换功能、主题替换。结合验证实例讲本质与使用模式。'],
+    ['lightning-talk-9', '用 SFC 实现医院・医疗系统的动态组装式 UI', 'SFCで実現する病院・医療システムの動的組み立て式UI', 'kouki.miura', '', '医疗 IT 工程师', '/speaker/koki_m',
+      '医生、护士、药剂师需要的信息不同，门诊、病房、ICU、手术室等场景也不同。把界面设计为 Vue 小组件（widget）的集合，让用户自由布置与保存，并现场演示重组界面。'],
+    ['lightning-talk-10', '如何与便利又危险的 Deep Reactivity 相处', '便利で危険なDeep Reactivityとの付き合い方', 'キナ', '', '程序员', '/speaker/CrafterKina',
+      'defineModel、可写 computed 乃至 props 都可能因隐式变更搞乱数据流——把对象传给 props，子组件就能悄悄改它而无人报警。基于实际经历介绍常见的数据流混乱模式与规避手段。'],
+  ].map(([id, title, ja, name, org, role, url, summary], i) => ({
+    id, start: '16:35', end: '17:50', tracks: ['t3'], kind: 'lt', group: 'lt', order: i + 1,
+    title, ja, speakers: [[name, org, role]], url, summary,
+  })),
+  { id: 'session-16', start: '16:35', end: '17:05', tracks: ['t4'], kind: 'session',
+    title: '从 Vue.js 的 GitHub 学习决策', ja: 'Vue.jsのGitHubから学ぶ意思決定',
+    speakers: [['永井優斗 / Yuto NAGAI', 'フューチャーアーキテクト株式会社', '高级顾问']], url: '/speaker/yut0naga1',
+    summary: '用 AI 横向整理 vuejs/vue、vuejs/core、vuejs/rfcs 约 10 年的 Issue、PR、RFC，以普通用户视角解读 Vue.js 面对过的问题与决策，理解 Composition API、<script setup> "为什么是这个形态"。重点是一种新学法：通过 GitHub 上的讨论学习 OSS 的设计与决策。' },
+  { id: 'session-17', start: '16:55', end: '17:25', tracks: ['t2'], kind: 'session',
+    title: 'WebGL 中的有限计算与平滑世界', ja: 'WebGLで見る、有限な計算と滑らかな世界',
+    speakers: [['中野 美咲', 'GitHub 品牌团队', 'WebGL Developer']], url: '/speaker/mnmxmx',
+    summary: '用 WebGL 做表现时，像素、数值精度等计算机限制会直接体现在画面与运动上。通过流体模拟与个人生成艺术作品，谈 1 像素这一最小单位、浮点精度，以及有限计算累积所生出的美与趣味。' },
+  { id: 'session-18', start: '17:20', end: '17:50', tracks: ['t4'], kind: 'session', cancelled: true,
+    title: '【已取消】无类型、无测试、含一万行领域逻辑的 Vuex 迁移到 Pinia', ja: '【講演中止】型なし、テストなし、1万行のドメインロジックがあるVuexをPiniaへ移行する' },
+  { id: 'after-party', start: '18:00', end: '19:30', tracks: ['t1', 't2'], kind: 'event',
+    title: 'After Party 交流会', ja: 'アフターパーティー', summary: '由 Link and Motivation（リンクアンドモチベーション）赞助。' },
+]
+
+const STORE_KEY = 'vuefes2026:zh'
+const state = Object.assign(
+  { picks: [], view: 'all', track: 'all', open: [] },
+  JSON.parse(localStorage.getItem(STORE_KEY) || '{}'),
+)
+const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(state))
+
+const min = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m }
+const byId = Object.fromEntries(S.map(s => [s.id, s]))
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+const trackLabel = s => s.tracks.length === 4 ? '全场' : s.tracks.map(t => TRACKS[t].name).join(' / ')
+const pickable = s => !s.cancelled && s.title !== '待定（TBD）'
+
+/** Current minutes-of-day in JST, or null when today is not the event day. */
+function nowJst() {
+  const d = new Date(Date.now() + 9 * 3600e3)
+  if (d.toISOString().slice(0, 10) !== DATE) return null
+  return d.getUTCHours() * 60 + d.getUTCMinutes()
+}
+const isLive = (s, now) => now != null && min(s.start) <= now && now < min(s.end)
+
+/** Returns ids of picked items that overlap another picked item, ignoring talks in the same back-to-back group. */
+function conflicts() {
+  const picked = state.picks.map(id => byId[id]).filter(Boolean)
+  const bad = new Set()
+  for (const a of picked) {
+    for (const b of picked) {
+      if (a === b || (a.group && a.group === b.group)) continue
+      if (min(a.start) < min(b.end) && min(b.start) < min(a.end)) bad.add(a.id)
+    }
+  }
+  return bad
+}
+
+function sorted(list) {
+  return [...list].sort((a, b) => min(a.start) - min(b.start) || (a.order ?? 0) - (b.order ?? 0) || a.tracks[0].localeCompare(b.tracks[0]) || min(a.end) - min(b.end))
+}
+
+function cardHtml(s, now, bad) {
+  const c = TRACKS[s.tracks[0]].color
+  const picked = state.picks.includes(s.id)
+  const open = state.open.includes(s.id)
+  const people = (s.speakers || []).map(p => `<b>${esc(p[0])}</b>`).join('、')
+  const host = (s.facilitators || []).map(p => `<b>${esc(p[0])}</b>`).join('、')
+  const hasMore = s.summary || s.speakers || s.extra
+  const cls = ['card', picked && 'picked', open && 'open', s.cancelled && 'cancel', s.kind === 'info' && 'info'].filter(Boolean).join(' ')
+  return `<article class="${cls}" style="--c:${s.tracks.length > 2 ? 'var(--faint)' : c}" data-id="${s.id}">
+    <div class="body" data-act="more">
+      <div class="meta">
+        <span>${s.start}–${s.end}</span>
+        <span class="tag track" style="--c:${s.tracks.length > 2 ? 'var(--sub)' : c}">${esc(trackLabel(s))}</span>
+        <span class="tag">${KIND[s.kind]}${s.order ? ` #${s.order}` : ''}</span>
+        ${isLive(s, now) ? '<span class="tag live">进行中</span>' : ''}
+        ${bad.has(s.id) ? '<span class="tag warn">时间冲突</span>' : ''}
+      </div>
+      <div class="title">${esc(s.title)}</div>
+      ${s.ja && s.ja !== s.title ? `<div class="orig">${esc(s.ja)}</div>` : ''}
+      ${people ? `<div class="who">${people}${host ? `　主持 ${host}` : ''}</div>` : ''}
+      ${hasMore ? `<div class="more">
+        ${s.summary ? `<p>${esc(s.summary)}</p>` : ''}
+        ${s.list ? `<ul>${s.list.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+        ${s.speakers ? `<ul>${[...s.speakers, ...(s.facilitators || []).map(f => [f[0] + '（主持）', f[1], f[2]])].map(p => `<li>${esc(p[0])} · ${esc([p[1], p[2]].filter(Boolean).join(' / '))}</li>`).join('')}</ul>` : ''}
+        ${s.extra ? `<p class="extra">${esc(s.extra)}</p>` : ''}
+        ${s.url ? `<p><a href="${OFFICIAL}${s.url}" target="_blank" rel="noopener">官网原文 ↗</a></p>` : ''}
+      </div>
+      <button class="toggle-more">${open ? '收起 ▴' : '简介 ▾'}</button>` : ''}
+    </div>
+    ${pickable(s) ? `<button class="star" data-act="pick" aria-pressed="${picked}" aria-label="想去">
+      <svg viewBox="0 0 24 24" fill="${picked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 17l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg>
+    </button>` : ''}
+  </article>`
+}
+
+function render() {
+  const now = nowJst()
+  const bad = conflicts()
+  const el = document.getElementById('list')
+  document.getElementById('viewAll').setAttribute('aria-pressed', state.view === 'all')
+  document.getElementById('viewMine').setAttribute('aria-pressed', state.view === 'mine')
+  document.getElementById('viewMine').textContent = `我的日程${state.picks.length ? `（${state.picks.length}）` : ''}`
+  document.getElementById('chips').style.display = state.view === 'all' ? '' : 'none'
+
+  let html = ''
+  el.classList.toggle('wide', state.view === 'all' && desktop.matches)
+  if (state.view === 'all' && desktop.matches) {
+    html += '<p class="note">点卡片看简介，点 ☆ 标记想去的场次（自动保存在本机）。时间均为日本时间 JST。</p>'
+    html += gridHtml(now, bad) + extrasHtml()
+  } else if (state.view === 'all') {
+    const list = sorted(S.filter(s => state.track === 'all' || s.tracks.includes(state.track)))
+    html += '<p class="note">点卡片看简介，点 ☆ 标记想去的场次（自动保存在本机）。时间均为日本时间 JST。</p>'
+    const slots = new Map()
+    for (const s of list) (slots.get(s.start) || slots.set(s.start, []).get(s.start)).push(s)
+    for (const [start, items] of slots) {
+      const live = items.some(s => isLive(s, now))
+      html += `<section class="slot" data-start="${start}"><div class="slot-head">${start}${live ? '<span class="now-pill">NOW</span>' : ''}</div>${items.map(s => cardHtml(s, now, bad)).join('')}</section>`
+    }
+    html += extrasHtml()
+  } else {
+    const list = sorted(state.picks.map(id => byId[id]).filter(Boolean))
+    if (!list.length) {
+      html = '<div class="empty">还没有标记任何场次喵～<br>去「全部日程」点 ☆ 吧</div>'
+    } else {
+      if (bad.size) html += `<p class="note" style="color:var(--warn)">⚠️ 有 ${bad.size} 场时间重叠，标了「时间冲突」的需要取舍。</p>`
+      let cursor = min('09:00')
+      for (const s of list) {
+        if (min(s.start) - cursor >= 15) html += `<div class="gap">${fmt(cursor)}–${s.start} · 空档 ${min(s.start) - cursor} 分钟（逛展位 / 休息）</div>`
+        html += cardHtml(s, now, bad)
+        cursor = Math.max(cursor, min(s.end))
+      }
+    }
+  }
+  el.innerHTML = html
+
+  const nb = bad.size
+  document.getElementById('count').innerHTML = `已选 <b>${state.picks.length}</b> 场${nb ? `<br><span class="cf">${nb} 场冲突</span>` : ''}`
+  document.getElementById('copyList').disabled = !state.picks.length
+  document.getElementById('copyPlan').disabled = !state.picks.length
+  document.getElementById('nowBtn').hidden = !(state.view === 'all' && now != null && now >= min('09:00') && now < min('19:30'))
+}
+
+const desktop = matchMedia('(min-width: 900px)')
+
+/**
+ * Desktop timetable: one column per visible track, rows cut at every distinct start/end time
+ * (auto height, so short sponsor slots stay readable). Items sharing time + tracks + group,
+ * e.g. the LT block, are stacked inside one cell.
+ */
+function gridHtml(now, bad) {
+  const cols = Object.keys(TRACKS).filter(t => state.track === 'all' || t === state.track)
+  const list = sorted(S.filter(s => s.tracks.some(t => cols.includes(t))))
+  const times = [...new Set(list.flatMap(s => [s.start, s.end]))].sort((a, b) => min(a) - min(b))
+  const row = t => times.indexOf(t) + 2
+  const cells = new Map()
+  for (const s of list) {
+    const key = [s.start, s.end, s.tracks.join(), s.group || s.id].join('|')
+    ;(cells.get(key) || cells.set(key, []).get(key)).push(s)
+  }
+  let html = `<div class="grid" style="--cols:${cols.length}"><div class="colhead" style="grid-column:1;border-color:transparent"></div>`
+  html += cols.map((t, i) => `<div class="colhead" style="grid-column:${i + 2};--c:${TRACKS[t].color}">${esc(TRACKS[t].full)}</div>`).join('')
+  const starts = new Set(list.map(s => s.start))
+  for (const t of times.slice(0, -1)) {
+    if (!starts.has(t)) continue
+    const live = list.some(s => s.start === t && isLive(s, now))
+    html += `<div class="tl slot${live ? ' live' : ''}" data-start="${t}" style="grid-row:${row(t)}">${t}</div>`
+  }
+  for (const items of cells.values()) {
+    const s = items[0]
+    const idx = s.tracks.map(t => cols.indexOf(t)).filter(i => i >= 0)
+    const head = items.length > 1 ? `<div class="group-head">${KIND[s.kind]} · ${s.start}–${s.end}</div>` : ''
+    html += `<div class="cell${items.length > 1 ? '' : ' single'}" style="grid-row:${row(s.start)}/${row(s.end)};grid-column:${Math.min(...idx) + 2}/${Math.max(...idx) + 3}">${head}${items.map(x => cardHtml(x, now, bad)).join('')}</div>`
+  }
+  return html + '</div>'
+}
+
+function extrasHtml() {
+  return `<div class="extras">
+    <h3>会场其他活动</h3>
+    <ul>
+      <li><b>赞助商展位集章</b>（1F）：集满 10 枚贴纸可抽奖，最多 2 次，必中。</li>
+      <li><b>万事咨询板</b>（2F 休息・充电区）：把问题写在便利贴上，现场的人会帮你解答。</li>
+      <li><b>御守角</b>（1F）：第 8 届纪念，可做一个写着心愿的原创御守带走。</li>
+      <li><b>免费饮料 & 零食</b>（1F・2F 门厅）。</li>
+    </ul>
+  </div>
+  <footer>数据来源：<a href="${OFFICIAL}/timetable" target="_blank" rel="noopener">vuefes.jp/2026/timetable</a>（2026-10-24 抓取，中文为翻译整理）。闪电演讲 #1–#10 依次在 16:35–17:50 进行，具体顺序以现场为准。</footer>`
+}
+
+const fmt = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`
+
+function speakerLine(s) {
+  const sp = (s.speakers || []).map(p => p[0] + (p[1] ? `（${p[1]}）` : '')).join('、')
+  const fa = (s.facilitators || []).map(p => p[0]).join('、')
+  return [sp, fa && `主持：${fa}`].filter(Boolean).join('；')
+}
+
+/** Detailed checklist of picked items, meant for notes or sharing with friends. */
+function exportList() {
+  const bad = conflicts()
+  const list = sorted(state.picks.map(id => byId[id]).filter(Boolean))
+  const lines = [`⭐ Vue Fes Japan 2026 · 我想去的场次（${list.length}）`, '2026/10/24（六）大手町 Place Hall & Conference', '']
+  list.forEach((s, i) => {
+    lines.push(`${i + 1}. ${s.start}–${s.end}［${trackLabel(s)}］${s.title}${bad.has(s.id) ? ' ⚠️冲突' : ''}`)
+    if (s.ja && s.ja !== s.title) lines.push(`   ${s.ja}`)
+    const who = speakerLine(s)
+    if (who) lines.push(`   🎤 ${who}`)
+    if (s.url) lines.push(`   🔗 ${OFFICIAL}${s.url}`)
+    lines.push('')
+  })
+  lines.push(importCode())
+  return lines.join('\n')
+}
+
+/** Whole-day timeline: picked items plus explicit free gaps, from doors-open to the last pick. */
+function exportPlan() {
+  const bad = conflicts()
+  const list = sorted(state.picks.map(id => byId[id]).filter(Boolean))
+  const lines = ['📅 Vue Fes Japan 2026 · 我的全天计划', '2026/10/24（六）大手町 Place Hall & Conference', '']
+  let cursor = min('09:00')
+  for (const s of list) {
+    if (min(s.start) - cursor >= 15) lines.push(`${fmt(cursor)}–${s.start}  ☕ 空档（逛展位 / 休息 / 换场）`)
+    const who = (s.speakers || []).map(p => p[0]).join('、')
+    lines.push(`${s.start}–${s.end}  ${s.title}${who ? ` — ${who}` : ''}  ［${trackLabel(s)}］${bad.has(s.id) ? ' ⚠️冲突' : ''}`)
+    cursor = Math.max(cursor, min(s.end))
+  }
+  if (cursor < min('19:30')) lines.push(`${fmt(cursor)}–  自由活动`)
+  lines.push('', importCode())
+  return lines.join('\n')
+}
+
+const CODE_PREFIX = '导入码 VF26:'
+const importCode = () => `${CODE_PREFIX}${state.picks.join(',')}`
+
+/**
+ * Extracts schedule ids from exported text. Prefers the trailing import code; falls back to
+ * matching official URLs and Chinese titles, so hand-edited or truncated exports still mostly work.
+ */
+function parseImport(text) {
+  const code = text.match(/VF26:([\w,-]+)/)
+  if (code) return code[1].split(',').filter(id => byId[id] && pickable(byId[id]))
+  return S.filter(s => pickable(s) && ((s.url && text.includes(OFFICIAL + s.url)) || text.includes(s.title))).map(s => s.id)
+}
+
+function applyImport(mode) {
+  const ids = parseImport(document.getElementById('impText').value)
+  if (!ids.length) return toast('没有识别到场次')
+  state.picks = mode === 'replace' ? ids : [...new Set([...state.picks, ...ids])]
+  state.view = 'mine'
+  save()
+  render()
+  document.getElementById('imp').close()
+  toast(`已导入 ${ids.length} 场 ✓`)
+}
+
+let toastTimer
+function toast(msg) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.add('show')
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800)
+}
+
+/**
+ * Copies text in a way that also works on iOS Safari over plain http / file:// where
+ * navigator.clipboard is unavailable; falls back to a manual-copy dialog as last resort.
+ */
+async function copy(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+      return toast('已复制到剪贴板 ✓')
+    }
+  } catch {}
+  const ta = document.createElement('textarea')
+  ta.value = text
+  ta.setAttribute('readonly', '')
+  ta.contentEditable = 'true'
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px'
+  document.body.appendChild(ta)
+  const range = document.createRange()
+  range.selectNodeContents(ta)
+  const sel = getSelection()
+  sel.removeAllRanges()
+  sel.addRange(range)
+  ta.setSelectionRange(0, text.length)
+  let ok = false
+  try { ok = document.execCommand('copy') } catch {}
+  ta.remove()
+  sel.removeAllRanges()
+  if (ok) return toast('已复制到剪贴板 ✓')
+  const dlg = document.getElementById('dlg')
+  document.getElementById('dlgText').value = text
+  document.getElementById('dlgShare').hidden = !navigator.share
+  dlg.showModal()
+}
+
+document.getElementById('list').addEventListener('click', e => {
+  if (e.target.closest('a')) return
+  const card = e.target.closest('.card')
+  if (!card) return
+  const id = card.dataset.id
+  if (e.target.closest('[data-act="pick"]')) {
+    const i = state.picks.indexOf(id)
+    i >= 0 ? state.picks.splice(i, 1) : state.picks.push(id)
+    if (i < 0 && navigator.vibrate) navigator.vibrate(8)
+    toast(i >= 0 ? '已取消标记' : '已加入我的日程 ⭐')
+  } else if (e.target.closest('[data-act="more"]') && card.querySelector('.more')) {
+    const i = state.open.indexOf(id)
+    i >= 0 ? state.open.splice(i, 1) : state.open.push(id)
+  } else return
+  save()
+  render()
+})
+
+document.getElementById('viewAll').onclick = () => { state.view = 'all'; save(); render(); scrollTo(0, 0) }
+document.getElementById('viewMine').onclick = () => { state.view = 'mine'; save(); render(); scrollTo(0, 0) }
+document.getElementById('importBtn').onclick = () => {
+  document.getElementById('impText').value = ''
+  document.getElementById('imp').showModal()
+}
+document.getElementById('impCancel').onclick = () => document.getElementById('imp').close()
+document.getElementById('impMerge').onclick = () => applyImport('merge')
+document.getElementById('impReplace').onclick = () => applyImport('replace')
+document.getElementById('copyList').onclick = () => copy(exportList())
+document.getElementById('copyPlan').onclick = () => copy(exportPlan())
+document.getElementById('dlgClose').onclick = () => document.getElementById('dlg').close()
+document.getElementById('dlgShare').onclick = () => navigator.share({ text: document.getElementById('dlgText').value }).catch(() => {})
+document.getElementById('nowBtn').onclick = () => {
+  const now = nowJst()
+  const slots = [...document.querySelectorAll('.slot')]
+  const target = slots.filter(x => min(x.dataset.start) <= now).pop() || slots[0]
+  const off = document.getElementById('top').offsetHeight
+  scrollTo({ top: target.getBoundingClientRect().top + scrollY - off - 4, behavior: 'smooth' })
+}
+
+function renderChips() {
+  const chips = [['all', '全部会场', 'var(--accent)'], ...Object.entries(TRACKS).map(([k, t]) => [k, t.name + ' 会场', t.color])]
+  const el = document.getElementById('chips')
+  el.innerHTML = chips.map(([k, label, c]) => `<button class="chip" style="--c:${c}" data-k="${k}" aria-pressed="${state.track === k}">${k === 'all' ? '' : '<i></i>'}${esc(label)}</button>`).join('')
+  el.onclick = e => {
+    const b = e.target.closest('.chip')
+    if (!b) return
+    state.track = b.dataset.k
+    save()
+    renderChips()
+    render()
+  }
+}
+
+/** Keeps the sticky time headers right below the (variable-height) top bar. */
+function syncHeadHeight() {
+  document.documentElement.style.setProperty('--head-h', document.getElementById('top').offsetHeight + 'px')
+}
+
+/**
+ * Hides the top and bottom bars while scrolling down and brings them back on any
+ * upward scroll, near the top, or at the very bottom (so the action bar is reachable).
+ */
+function setupAutoHide() {
+  let lastY = scrollY
+  let ticking = false
+  const update = () => {
+    ticking = false
+    const y = scrollY
+    const dy = y - lastY
+    const atBottom = innerHeight + y >= document.documentElement.scrollHeight - 40
+    if (y < 60 || atBottom || dy < -8) document.body.classList.remove('chrome-off')
+    else if (dy > 8) document.body.classList.add('chrome-off')
+    if (Math.abs(dy) > 8) lastY = y
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update) } }, { passive: true })
+}
+
+renderChips()
+render()
+syncHeadHeight()
+setupAutoHide()
+desktop.addEventListener('change', () => { render(); syncHeadHeight() })
+addEventListener('resize', syncHeadHeight)
+new ResizeObserver(syncHeadHeight).observe(document.getElementById('top'))
+setInterval(render, 60e3)
+</script>
+</body>
+</html>
