@@ -175,32 +175,61 @@ body.chrome-off .slot-head { top: 0; padding-top: calc(6px + var(--safe-t)); }
 body.chrome-off .bar { transform: translateY(100%); }
 body.chrome-off .fab { transform: translateY(calc(56px + var(--safe-b))); }
 
-/* Desktop: time × track grid so parallel sessions sit side by side. */
+/* Timetable grid (time × track): default on desktop, opt-in on mobile via the layout toggle. */
+main.wide { max-width: 1400px; }
+.grid {
+  display: grid; column-gap: 10px;
+  grid-template-columns: 52px repeat(var(--cols), minmax(0, 1fr));
+}
+.grid .colhead {
+  position: sticky; top: var(--head-h); z-index: 6; background: var(--bg);
+  font-size: 13px; font-weight: 700; padding: 10px 6px 6px; border-bottom: 3px solid var(--c);
+  transition: top .25s ease;
+}
+body.chrome-off .grid .colhead { top: 0; }
+.grid .tl {
+  grid-column: 1; margin: 0; font-size: 13px; font-weight: 700; color: var(--sub);
+  padding-top: 10px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums;
+}
+.grid .tl.live { color: #e5484d; }
+.grid .cell { display: flex; flex-direction: column; gap: 6px; padding: 5px 0; min-width: 0; }
+.grid .cell .card { margin: 0; }
+.grid .cell.single .card { flex: 1; }
+.grid .cell .group-head { font-size: 12px; font-weight: 700; color: var(--sub); padding: 2px 4px; }
+.grid .title { font-size: 15px; }
+.grid .star { width: 44px; }
+.grid .star svg { width: 24px; height: 24px; }
+
+.layout-btn {
+  flex: none; width: 34px; height: 32px; border-radius: 9px; background: var(--line); color: var(--sub);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.layout-btn svg { width: 18px; height: 18px; }
+.layout-btn[hidden] { display: none; }
+
 @media (min-width: 900px) {
-  main.wide { max-width: 1400px; padding: 4px 20px 0; }
+  main.wide { padding: 4px 20px 0; }
   .seg { flex: 0 1 360px; margin-left: auto; }
-  .grid {
-    display: grid; column-gap: 10px;
-    grid-template-columns: 52px repeat(var(--cols), minmax(0, 1fr));
+}
+
+/*
+ * Narrow screens: columns keep a readable width and the grid scrolls sideways inside its own
+ * container, with the time column pinned to the left. Vertical stickiness of the column heads is
+ * dropped because an overflow-x container cannot stick to the page viewport.
+ */
+@media (max-width: 899px) {
+  .grid-scroll {
+    overflow-x: auto; margin: 0 -12px; padding: 0 12px 0 0;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
   }
-  .grid .colhead {
-    position: sticky; top: var(--head-h); z-index: 6; background: var(--bg);
-    font-size: 13px; font-weight: 700; padding: 10px 6px 6px; border-bottom: 3px solid var(--c);
-    transition: top .25s ease;
-  }
-  body.chrome-off .grid .colhead { top: 0; }
-  .grid .tl {
-    grid-column: 1; margin: 0; font-size: 13px; font-weight: 700; color: var(--sub);
-    padding-top: 10px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums;
-  }
-  .grid .tl.live { color: #e5484d; }
-  .grid .cell { display: flex; flex-direction: column; gap: 6px; padding: 5px 0; min-width: 0; }
-  .grid .cell .card { margin: 0; }
-  .grid .cell.single .card { flex: 1; }
-  .grid .cell .group-head { font-size: 12px; font-weight: 700; color: var(--sub); padding: 2px 4px; }
-  .grid .title { font-size: 15px; }
-  .grid .star { width: 44px; }
-  .grid .star svg { width: 24px; height: 24px; }
+  .grid { grid-template-columns: 46px repeat(var(--cols), minmax(max(62vw, 210px), 1fr)); column-gap: 8px; width: max-content; min-width: 100%; }
+  .grid .colhead { position: static; scroll-snap-align: start; scroll-margin-left: 54px; font-size: 12px; }
+  .grid .colhead:first-child, .grid .tl { position: sticky; left: 0; z-index: 4; background: var(--bg); padding-left: 8px; }
+  .grid .tl { font-size: 12px; padding-left: 6px; box-shadow: 8px 0 0 var(--bg); }
+  .grid .orig { display: none; }
+  .grid .title { font-size: 14.5px; }
+  .grid .card .body { padding: 9px 2px 9px 10px; }
+  .grid .star { width: 40px; padding-top: 8px; }
 }
 .toast {
   position: fixed; left: 50%; bottom: calc(90px + var(--safe-b)); z-index: 50;
@@ -233,6 +262,7 @@ dialog .dact { display: flex; gap: 8px; justify-content: flex-end; padding: 0 16
       <button id="viewAll" aria-pressed="true">全部日程</button>
       <button id="viewMine" aria-pressed="false">我的日程</button>
     </div>
+    <button class="layout-btn" id="layoutBtn" aria-label="切换时间表视图"></button>
   </div>
   <div class="chips" id="chips"></div>
 </header>
@@ -546,8 +576,13 @@ function render() {
   document.getElementById('chips').style.display = state.view === 'all' ? '' : 'none'
 
   let html = ''
-  el.classList.toggle('wide', state.view === 'all' && desktop.matches)
-  if (state.view === 'all' && desktop.matches) {
+  const grid = state.view === 'all' && useGrid()
+  el.classList.toggle('wide', grid)
+  const lb = document.getElementById('layoutBtn')
+  lb.hidden = state.view !== 'all'
+  lb.setAttribute('aria-pressed', grid)
+  lb.innerHTML = grid ? ICON_LIST : ICON_GRID
+  if (grid) {
     html += '<p class="note">点卡片看简介，点 ☆ 标记想去的场次（自动保存在本机）。时间均为日本时间 JST。</p>'
     html += gridHtml(now, bad) + extrasHtml()
   } else if (state.view === 'all') {
@@ -584,6 +619,10 @@ function render() {
 }
 
 const desktop = matchMedia('(min-width: 900px)')
+/** Explicit user choice wins; otherwise grid on desktop, list on phones. */
+const useGrid = () => state.layout ? state.layout === 'grid' : desktop.matches
+const ICON_GRID = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="16" rx="1.5"/><rect x="14" y="4" width="7" height="16" rx="1.5"/></svg>'
+const ICON_LIST = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>'
 
 /**
  * Desktop timetable: one column per visible track, rows cut at every distinct start/end time
@@ -600,7 +639,7 @@ function gridHtml(now, bad) {
     const key = [s.start, s.end, s.tracks.join(), s.group || s.id].join('|')
     ;(cells.get(key) || cells.set(key, []).get(key)).push(s)
   }
-  let html = `<div class="grid" style="--cols:${cols.length}"><div class="colhead" style="grid-column:1;border-color:transparent"></div>`
+  let html = `<div class="grid-scroll"><div class="grid" style="--cols:${cols.length}"><div class="colhead" style="grid-column:1;border-color:transparent"></div>`
   html += cols.map((t, i) => `<div class="colhead" style="grid-column:${i + 2};--c:${TRACKS[t].color}">${esc(TRACKS[t].full)}</div>`).join('')
   const starts = new Set(list.map(s => s.start))
   for (const t of times.slice(0, -1)) {
@@ -614,7 +653,7 @@ function gridHtml(now, bad) {
     const head = items.length > 1 ? `<div class="group-head">${KIND[s.kind]} · ${s.start}–${s.end}</div>` : ''
     html += `<div class="cell${items.length > 1 ? '' : ' single'}" style="grid-row:${row(s.start)}/${row(s.end)};grid-column:${Math.min(...idx) + 2}/${Math.max(...idx) + 3}">${head}${items.map(x => cardHtml(x, now, bad)).join('')}</div>`
   }
-  return html + '</div>'
+  return html + '</div></div>'
 }
 
 function extrasHtml() {
@@ -766,6 +805,12 @@ document.getElementById('importBtn').onclick = () => {
 document.getElementById('impCancel').onclick = () => document.getElementById('imp').close()
 document.getElementById('impMerge').onclick = () => applyImport('merge')
 document.getElementById('impReplace').onclick = () => applyImport('replace')
+document.getElementById('layoutBtn').onclick = () => {
+  state.layout = useGrid() ? 'list' : 'grid'
+  save()
+  render()
+  toast(state.layout === 'grid' ? '时间表视图（可左右滑动）' : '列表视图')
+}
 document.getElementById('copyList').onclick = () => copy(exportList())
 document.getElementById('copyPlan').onclick = () => copy(exportPlan())
 document.getElementById('dlgClose').onclick = () => document.getElementById('dlg').close()
