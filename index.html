@@ -396,10 +396,10 @@ const OFFICIAL = 'https://vuefes.jp/2026'
 const DATE = '2026-10-24'
 
 const TRACKS = {
-  t1: { name: 'hacomono', full: 'ウェルネス×hacomono トラック', color: 'var(--t1)' },
-  t2: { name: 'Vue', full: 'Vue トラック', color: 'var(--t2)' },
-  t3: { name: 'サイボウズ', full: 'サイボウズ トラック', color: 'var(--t3)' },
-  t4: { name: 'メドピア', full: 'メドピア トラック', color: 'var(--t4)' },
+  t1: { name: 'hacomono', full: 'ウェルネス×hacomono トラック', floor: '2F', color: 'var(--t1)' },
+  t2: { name: 'Vue', full: 'Vue トラック', floor: '2F', color: 'var(--t2)' },
+  t3: { name: 'サイボウズ', full: 'サイボウズ トラック', floor: '1F', color: 'var(--t3)' },
+  t4: { name: 'メドピア', full: 'メドピア トラック', floor: '1F', color: 'var(--t4)' },
 }
 
 const KIND = {
@@ -588,7 +588,14 @@ const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(state))
 const min = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m }
 const byId = Object.fromEntries(S.map(s => [s.id, s]))
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
-const trackLabel = s => s.tracks.length === 4 ? '全场' : s.tracks.map(t => TRACKS[t].name).join(' / ')
+/** Track names plus floor, e.g. "hacomono / Vue · 2F"; floors are merged when every track shares one. */
+function trackLabel(s) {
+  if (s.tracks.length === 4) return '全场'
+  const floors = [...new Set(s.tracks.map(t => TRACKS[t].floor))]
+  return floors.length === 1
+    ? `${s.tracks.map(t => TRACKS[t].name).join(' / ')} · ${floors[0]}`
+    : s.tracks.map(t => `${TRACKS[t].name} ${TRACKS[t].floor}`).join(' / ')
+}
 const pickable = s => !s.cancelled && s.title !== '待定（TBD）'
 
 /** Current minutes-of-day in JST, or null when today is not the event day. */
@@ -762,7 +769,7 @@ function gridHtml(now, bad) {
     ;(cells.get(key) || cells.set(key, []).get(key)).push(s)
   }
   let html = `<div class="grid-scroll"><div class="grid" style="--cols:${cols.length}"><div class="colhead" style="grid-column:1;border-color:transparent"></div>`
-  html += cols.map((t, i) => `<div class="colhead" style="grid-column:${i + 2};--c:${TRACKS[t].color}">${esc(TRACKS[t].full)}</div>`).join('')
+  html += cols.map((t, i) => `<div class="colhead" style="grid-column:${i + 2};--c:${TRACKS[t].color}">${esc(TRACKS[t].full)} · ${TRACKS[t].floor}</div>`).join('')
   const starts = new Set(list.map(s => s.start))
   for (const t of times.slice(0, -1)) {
     if (!starts.has(t)) continue
@@ -813,6 +820,12 @@ function fitGrid() {
 
 function extrasHtml() {
   return `<div class="extras">
+    <h3>楼层</h3>
+    <ul>
+      <li><b>2F</b>：ウェルネス×hacomono、Vue 两个会场，签到处，休息・充电区，纹身贴区。</li>
+      <li><b>1F</b>：サイボウズ、メドピア 两个会场，赞助商展位，Vue Fes Store，休息・充电区。</li>
+      <li><a href="${OFFICIAL}/images/venue-map/map_jp@2x.png" target="_blank" rel="noopener">官方会场地图 ↗</a></li>
+    </ul>
     <h3>会场其他活动</h3>
     <ul>
       <li><b>赞助商展位集章</b>（1F）：集满 10 枚贴纸可抽奖，最多 2 次，必中。</li>
@@ -979,7 +992,7 @@ document.getElementById('nowBtn').onclick = () => {
 }
 
 function renderChips() {
-  const chips = [['all', '全部会场', 'var(--accent)'], ...Object.entries(TRACKS).map(([k, t]) => [k, t.name + ' 会场', t.color])]
+  const chips = [['all', '全部会场', 'var(--accent)'], ...Object.entries(TRACKS).map(([k, t]) => [k, `${t.name} · ${t.floor}`, t.color])]
   const el = document.getElementById('chips')
   el.innerHTML = chips.map(([k, label, c]) => `<button class="chip" style="--c:${c}" data-k="${k}" aria-pressed="${state.track === k}">${k === 'all' ? '' : '<i></i>'}${esc(label)}</button>`).join('')
   el.onclick = e => {
